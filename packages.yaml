@@ -1,0 +1,24 @@
+---
+ - name: Install multiple Packages
+   hosts: servera
+   tasks:
+        - name: Installs the php & mariadb on hosts
+          yum:
+            name:
+              - php
+              - mariadb
+            state: present
+
+        - name: Update all packages to the latest version
+          yum:
+            name: '*'
+            state: latest
+
+
+ - name: Installs the ”RPM Development Tools” package group on servera/node4 host group
+   hosts: serverc
+   tasks:
+        - name: Installs the ”RPM Development Tools” package group
+          yum:
+            name: "@RPM Development Tools"
+            state: present
