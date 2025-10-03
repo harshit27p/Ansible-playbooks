@@ -1,0 +1,19 @@
+---
+ - name: Install multiple Packages
+   hosts: servera
+   tasks:
+        - name: Installs the php & mariadb on hosts
+          yum:
+            name:
+              - php
+              - mariadb-*
+              - bind
+            state: present
+
+        - name: start service
+          service:
+            name: "{{ item }}"
+            state: started
+          loop:
+            - mariadb.service
+            - named.service
