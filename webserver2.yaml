@@ -1,0 +1,38 @@
+---
+ - name: configure a web-server
+   hosts: dev
+   vars_files:
+     - ./web_vars.yaml
+   tasks:
+     - name: install httpd
+       yum:
+         name: "{{ package }}"
+         state: present
+       register: output
+
+     - name: print output var value
+       debug:
+         var: output
+
+     - name: start & enable httpd service
+       service:
+         name: "{{ service }}"
+         state: started
+         enabled: yes
+
+     - name: open 80/tcp port on firewall
+       firewalld:
+         service: "{{ port }}"
+         state: enabled
+         permanent: true
+         immediate: true
+
+     - name: copy web-content
+       copy:
+         src: ./index.html
+         dest: /var/www/html
+
+     - name: restart httpd.service
+       service:
+         name: "{{ service }}"
+         state: restarted
