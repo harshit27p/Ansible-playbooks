@@ -1,0 +1,31 @@
+---
+ - name: configure a web-server
+   hosts: dev
+   tasks:
+     - name: install httpd
+       yum:
+         name: httpd
+         state: present
+
+     - name: start & enable httpd service
+       service:
+         name: httpd.service
+         state: started
+         enabled: yes
+
+     - name: open 80/tcp port on firewall
+       firewalld:
+         service: http
+         state: enabled
+         permanent: true
+         immediate: true
+
+     - name: copy web-content
+       copy:
+         src: ./index.html
+         dest: /var/www/html
+
+     - name: restart httpd.service
+       service:
+         name: httpd.service
+         state: restarted
