@@ -1,0 +1,18 @@
+---
+ - name: configure local repos
+   hosts: dev
+   tasks:
+          - name: App Congifure
+            yum_repository:
+              name: App
+              description: This is App repo
+              baseurl: "https://repo.almalinux.org/almalinux/9/AppStream/x86_64/os"
+              gpgcheck: no
+              enabled: yes
+          - name: Base Congifure
+            yum_repository:
+              name: Base
+              description: This is Base repo
+              baseurl: "https://repo.almalinux.org/almalinux/9/BaseOS/x86_64/os"
+              gpgcheck: no
+              enabled: yes
