@@ -1,0 +1,21 @@
+---
+ - name: using block rescue and always
+   hosts: dev
+   tasks:
+     - name: installing web-server
+       block:
+         - name: apache started
+           service:
+             name: httpd
+             state: started
+
+       rescue:
+         - name: nginx started
+           service:
+             name: nginx
+             state: started
+
+       always:
+         - name: start web-service
+           debug:
+             msg: web-service started
