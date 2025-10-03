@@ -1,0 +1,12 @@
+---
+ - name: copy multiple files
+   hosts: prod
+   tasks:
+     - name: copy files
+       copy:
+         src: "{{ item }}"
+         dest: /home/student
+       with_items:
+         - ./file1.txt
+         - ./file2.txt
+         - ./file3.txt
