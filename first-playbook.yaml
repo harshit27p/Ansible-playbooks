@@ -1,0 +1,9 @@
+---
+ - name: this is my 1st play
+   hosts: dev
+   tasks:
+          - name: create a file
+            file:
+                  path: /tmp/rcat.txt
+                  mode: '640'
+                  state: touch
