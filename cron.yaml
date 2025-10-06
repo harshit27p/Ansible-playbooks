@@ -1,0 +1,11 @@
+---
+ - name: scheduling a cron job for deepak
+   hosts: all
+   tasks:
+     - name: cron job
+       cron:
+         name: "test"
+         user: admin
+         minute: "*/3"
+         job: "logger RH294"
+         state: present
