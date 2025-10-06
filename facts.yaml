@@ -1,6 +1,10 @@
 ---
  - name: print the facts
    hosts: servera
+   vars:
+     os:
+       - RedHat
+       - Fedora
    tasks:
      - name: print IPV6 address
        debug:
@@ -13,3 +17,8 @@
      - name: print storage info
        debug:
          msg: Hello the storage info is {{ ansible_devices.sda.partitions.sda2.size }}
+
+     - name: print when condition
+       debug:
+         msg: Hello the storage info is {{ ansible_devices.sda.partitions.sda2.size }}
+       when: ansible_distribution in os
