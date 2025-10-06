@@ -1,0 +1,16 @@
+---
+ - name: modifying file content
+   hosts: servera
+   tasks:
+     - name: modify
+       copy:
+         dest: /etc/issue
+         content: Development
+
+ - name: modifying file content
+   hosts: serverc
+   tasks:
+     - name: modify
+       copy:
+         dest: /etc/issue
+         content: Test
