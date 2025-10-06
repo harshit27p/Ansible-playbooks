@@ -1,0 +1,26 @@
+---
+ - name: Configure web development directory
+   hosts: dev
+   tasks:
+     - name: create dir
+       file:
+         path: /webdev
+         state: directory
+         group: apache
+         mode: '2775'
+         setype: httpd_sys_content_t
+
+     - name: symbolic link
+       file:
+         src: /webdev
+         dest: /var/www/html/webdev
+         state: link
+         force: yes
+         setype: httpd_sys_content_t
+
+     - name: Create a file
+       lineinfile:
+         path: /webdev/index.html
+         line: Development
+         create: yes
+         setype: httpd_sys_content_t
