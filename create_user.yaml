@@ -1,0 +1,40 @@
+---
+ - name: create users
+   hosts: servera
+   vars_files:
+     - list_users2.yaml
+     - vault.yaml
+
+   tasks:
+     - name: add a group
+       group:
+         name: devops
+         state: present
+
+     - name: user creation
+       user:
+         name: "{{ item.name }}"
+         groups: devops
+         password: "{{ dev_pass | password_hash('sha512') }}"
+       when: item.job=="developer"
+       loop: "{{ user }}"
+
+ - name: create users
+   hosts: serverc
+   vars_files:
+     - list_users2.yaml
+     - vault.yaml
+
+   tasks:
+     - name: add a group
+       group:
+         name: opsmgr
+         state: present
+
+     - name: user creation
+       user:
+         name: "{{ item.name }}"
+         groups: opsmgr
+         password: "{{ mgr_pass | password_hash('sha512') }}"
+       when: item.job=="manager"
+       loop: "{{ user }}"
