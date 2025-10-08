@@ -1,0 +1,32 @@
+---
+ - name: lv create
+   hosts: all
+   tasks:
+     - name: vg not present
+       debug:
+         msg: vg is not present
+       when: ansible_lvm.vgs.research is not defined
+
+     - name: create 1000M lvm
+       lvol:
+         vg: research
+         lv: data
+         size: 1000m
+       when: ansible_lvm.vgs.research.free_g>="1"
+
+     - name: required vg size not present
+       debug:
+         msg: required size is not present
+       when: ansible_lvm.vgs.research.free_g<="1"
+
+     - name: create 800M lvm
+       lvol:
+         vg: research
+         lv: data
+         size: 800m
+       when: ansible_lvm.vgs.research.free_g<="1"
+
+     - name: format the lvm
+       filesystem:
+         fstype: ext4
+         dev: /dev/research/data
