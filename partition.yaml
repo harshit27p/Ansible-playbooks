@@ -1,0 +1,41 @@
+---
+ - name: create partition
+   hosts: all
+   tasks:
+     - name: if devices not available
+       debug:
+         msg: device is not present
+       when: ansible_devices.sdb is not defined
+
+     - name: create 1000m partition
+       parted:
+         device: /dev/sdb
+         number: 1
+         state: present
+         part_end: 1000MiB
+       when: ansible_devices.sdb.size>="1.00 GB"
+
+     - name: if required size is not present
+       debug:
+         msg: required size is not present
+       when: ansible_devices.sdb.size<"1.00 GB"
+
+     - name: create 800m partition
+       parted:
+         device: /dev/sdb
+         number: 1
+         state: present
+         part_end: 800MiB
+       when: ansible_devices.sdb.size<"1.00 GB"
+
+     - name: format with ext4
+       filesystem:
+         fstype: ext4
+         dev: /dev/sdb1
+
+     - name: mount the fs
+       mount:
+         path: database
+         src: /dev/sdb1
+         fstype: ext4
+         state: present
