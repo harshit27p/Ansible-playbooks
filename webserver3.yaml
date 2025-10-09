@@ -1,0 +1,51 @@
+---
+ - name: configure a web-server
+   hosts: dev
+   vars:
+     admin: root@localhost
+     dc: /var/www/html
+   tasks:
+     - name: install httpd
+       yum:
+         name: httpd
+         state: present
+       register: output
+       notify: print_info
+
+     - name: print output var value
+       debug:
+         var: output
+
+     - name: start & enable httpd service
+       service:
+         name: httpd.service
+         state: started
+         enabled: yes
+
+     - name: open 80/tcp port on firewall
+       firewalld:
+         service: http
+         state: enabled
+         permanent: true
+         immediate: true
+
+     - name: copy web-content
+       copy:
+         src: ./index.html
+         dest: /var/www/html
+
+     - name: copy conf file
+       template:
+         src: ./example.j2
+         dest: /etc/httpd/conf.d/example.conf
+       notify: restarted
+
+   handlers:
+     - name: restarted
+       service:
+         name: httpd
+         state: restarted
+
+     - name: print_info
+       debug:
+         msg: Install apache sucessfully
