@@ -1,0 +1,8 @@
+---
+ - name: copy multipal files
+   hosts: servera
+   tasks:
+     - name: copy files
+       template:
+         src: ./machine_info.txt
+         dest: /home/student
