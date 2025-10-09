@@ -1,0 +1,3 @@
+{% for version in ansible_python.version_info %}
+  {{ version }}
+ {% endfor %}
