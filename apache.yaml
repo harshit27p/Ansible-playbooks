@@ -1,0 +1,5 @@
+---
+ - name: configure apache
+   hosts: dev
+   roles:
+     - apache
